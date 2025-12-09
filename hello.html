@@ -1,1 +1,507 @@
-<h1>hello Guru</h1>
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Srishti's Veg Food Hub</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --brand:#15c27c;
+    --brand-2:#ffd166;
+    --text:#0e0f0f;
+    --bg:#0b0b0c;
+    --glass: rgba(255,255,255,.08);
+    --glass-light: rgba(255,255,255,.12);
+    --white: #fff;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{
+    font-family:'Poppins',system-ui,Arial;
+    color:var(--white);
+    /* FOOD THEME BACKGROUND */
+    background:
+      linear-gradient(180deg, #0b0f13 0%, #0a0a0a 100%),
+      url('https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1600&q=80')
+      center/cover fixed no-repeat;
+    min-height:100vh;
+  }
+
+  /* Top Bar */
+  header{
+    position:sticky; top:0; z-index:50;
+    backdrop-filter: blur(10px);
+    background: rgba(0,0,0,.45);
+    border-bottom:1px solid #ffffff10;
+  }
+  .nav{
+    max-width:1200px; margin:0 auto;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:14px 18px;
+  }
+  .brand{
+    font-weight:700; letter-spacing:.5px; display:flex; gap:10px; align-items:center;
+  }
+  .brand .dot{width:10px;height:10px;border-radius:50%;background:var(--brand)}
+  .nav a{
+    color:#eaeaea; text-decoration:none; margin-left:18px; font-weight:600; font-size:.98rem;
+  }
+  .nav a:hover{color:var(--brand)}
+  .cta{
+    padding:10px 14px; border-radius:999px; background:var(--brand); color:#002b17; font-weight:700; border:none; cursor:pointer;
+  }
+
+  /* Hero */
+  .hero{
+    position:relative; overflow:hidden;
+    max-width:1200px; margin:22px auto; border-radius:22px;
+    background: linear-gradient(135deg, rgba(21,194,124,.14), rgba(255,209,102,.12));
+    border:1px solid #ffffff1a;
+    box-shadow: 0 30px 80px #00000055;
+  }
+  .hero-inner{
+    display:grid; grid-template-columns:1.2fr .8fr; gap:10px; padding:36px 26px 20px;
+  }
+  .hero h1{font-size:2.2rem; line-height:1.2; margin:6px 0 8px}
+  .hero p{opacity:.9; margin:0 0 16px}
+  .chips{display:flex; gap:10px; flex-wrap:wrap; margin:8px 0 14px}
+  .chip{
+    background:var(--glass-light); border:1px solid #ffffff1f;
+    padding:8px 12px; border-radius:999px; font-size:.85rem
+  }
+  .hero img{
+    width:100%; height:320px; object-fit:cover; border-radius:18px;
+    border:1px solid #ffffff1a;
+    transform: translateY(0);
+    transition: transform .8s ease;
+  }
+  .hero:hover img{ transform: translateY(-6px); }
+
+  .hero .actions{display:flex; gap:12px}
+  .btn{
+    padding:12px 16px; border-radius:12px; border:1px solid #ffffff22;
+    background:var(--glass); color:#fff; font-weight:600; cursor:pointer;
+    transition: transform .15s ease, background .2s ease;
+  }
+  .btn:hover{ transform: translateY(-2px); background:var(--glass-light) }
+  .btn.primary{ background:var(--brand); color:#002b17; border-color:#0bbf75 }
+  .btn.primary:hover{ background:#10b777 }
+
+  /* Menu Grid */
+  .section{
+    max-width:1200px; margin:26px auto; padding:0 10px;
+  }
+  .section h2{
+    font-size:1.6rem; margin:0 0 14px; font-weight:700;
+  }
+  .sub{opacity:.8; margin-bottom:16px}
+  .grid{
+    display:grid; gap:16px;
+    grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+  }
+  .card{
+    background: var(--glass);
+    border:1px solid #ffffff1a; border-radius:18px; overflow:hidden;
+    transition: transform .2s ease, box-shadow .2s ease, opacity .5s ease, translate .5s ease;
+    box-shadow: 0 12px 30px #0000004a;
+    opacity:0; transform: translateY(10px);
+  }
+  .card.visible{ opacity:1; transform: translateY(0) }
+  .card img{ width:100%; height:160px; object-fit:cover }
+  .card .body{ padding:12px 12px 14px }
+  .title{ font-weight:700; margin:4px 0 6px }
+  .desc{ font-size:.9rem; opacity:.9; min-height:42px }
+  .priceRow{ display:flex; align-items:center; justify-content:space-between; margin-top:10px }
+  .price{ font-weight:700; color:var(--brand-2) }
+  .small{ font-size:.82rem; opacity:.8 }
+  .add{
+    border: none; border-radius:10px; padding:10px 12px; font-weight:700; cursor:pointer;
+    background:var(--brand); color:#062b1a;
+  }
+  .add:hover{ filter:brightness(.95) }
+
+  /* Cart */
+  .cart{
+    position:fixed; right:18px; bottom:18px; width:320px; max-height:70vh; overflow:auto;
+    background: rgba(10,14,12,.86); border:1px solid #ffffff1a; border-radius:16px; padding:12px;
+    box-shadow: 0 18px 70px #000000aa; z-index:40;
+  }
+  .cart h3{ margin:4px 0 8px; font-size:1.05rem }
+  .cart-item{
+    display:grid; grid-template-columns: auto 1fr auto; gap:8px; align-items:center;
+    padding:8px; background:#ffffff07; border:1px solid #ffffff12; border-radius:12px; margin-bottom:8px;
+  }
+  .cart-item img{ width:56px; height:44px; object-fit:cover; border-radius:8px }
+  .cart-item .meta{ font-size:.9rem }
+  .qty{ display:flex; align-items:center; gap:6px }
+  .qty button{
+    width:26px; height:26px; border-radius:8px; border:1px solid #ffffff25; background:#ffffff10; color:#fff; cursor:pointer;
+  }
+  .total{
+    display:flex; justify-content:space-between; align-items:center; margin-top:8px; padding-top:8px; border-top:1px dashed #ffffff22;
+  }
+  .checkout{ width:100%; margin-top:10px }
+
+  /* Modals (Login/Signup) */
+  .overlay{
+    position:fixed; inset:0; background: rgba(0,0,0,.6); display:none; place-items:center; z-index:60;
+  }
+  .modal{
+    width:min(92vw, 520px); background:#0f1312; color:#eaeaea; border:1px solid #ffffff1a; border-radius:16px;
+    box-shadow:0 20px 80px #000; padding:16px;
+  }
+  .tabs{ display:flex; gap:8px; margin-bottom:8px }
+  .tabs button{ flex:1; padding:12px; background:#ffffff08; border:1px solid #ffffff18; color:#fff; border-radius:10px; cursor:pointer; }
+  .tabs button.active{ background:var(--brand); color:#062b1a; border-color:#0bbf75 }
+  .form{ display:grid; gap:10px; margin-top:8px }
+  .form input{
+    padding:12px 14px; border-radius:10px; border:1px solid #ffffff22; background:#0a0d0c; color:#fff;
+  }
+  .close{ float:right; background:#ffffff0f; border:1px solid #ffffff1f; color:#fff; padding:6px 10px; border-radius:10px; cursor:pointer }
+
+  /* Info (last) – pure black/white look */
+  .info{
+    background:#000; color:#fff; margin-top:28px; border-top:1px solid #ffffff14;
+  }
+  .info .wrap{ max-width:1200px; margin:0 auto; padding:22px 12px; display:grid; gap:22px; grid-template-columns: repeat(auto-fit,minmax(240px,1fr)); }
+  .info h4{ margin:0 0 8px; font-size:1.05rem }
+  .muted{ color:#cfcfcf; opacity:.9; line-height:1.6 }
+
+  footer{
+    background:#000; color:#9aa0a6; text-align:center; padding:14px; border-top:1px solid #ffffff10;
+  }
+
+  @media (max-width:850px){
+    .hero-inner{ grid-template-columns:1fr; }
+  }
+</style>
+</head>
+<body>
+
+  <!-- Header / Nav -->
+  <header>
+    <div class="nav">
+      <div class="brand"><span class="dot"></span> Srishti's Veg Food Hub</div>
+      <nav>
+        <a href="#menu">Menu</a>
+        <a href="#howto">How to Order</a>
+        <a href="#contact">Contact</a>
+        <button class="cta" id="openAuth">Login / Signup</button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-inner">
+      <div>
+        <h1>Premium Vegetarian Delights, Fresh & Hygienic.</h1>
+        <p class="sub">Handpicked ingredients • Chef-curated recipes • Fast delivery</p>
+        <div class="chips">
+          <span class="chip">100% Veg</span>
+          <span class="chip">No Preservatives</span>
+          <span class="chip">Eco Packaging</span>
+        </div>
+        <div class="actions">
+          <a href="#menu" class="btn primary">Order Now</a>
+          <a href="#howto" class="btn">How it works</a>
+        </div>
+      </div>
+      <img alt="Veg Platter"
+        src="https://images.unsplash.com/photo-1543353071-087092ec393a?auto=format&fit=crop&w=1200&q=80">
+    </div>
+  </section>
+
+  <!-- Menu (10+ vegetarian items with RELIABLE image URLs) -->
+  <section class="section" id="menu">
+    <h2>Our Vegetarian Menu</h2>
+    <p class="sub">Curated classics with a modern twist. Click “Add to Cart” to build your order.</p>
+    <div class="grid" id="menuGrid"></div>
+  </section>
+
+  <!-- How to Order -->
+  <section class="section" id="howto">
+    <h2>How to Order</h2>
+    <p class="sub">Simple, transparent, and fast.</p>
+    <div class="grid">
+      <div class="card visible">
+        <div class="body">
+          <div class="title">1) Browse the Menu</div>
+          <p class="desc">Explore our 100% vegetarian dishes. Each item includes a concise description and a clear price.</p>
+        </div>
+      </div>
+      <div class="card visible">
+        <div class="body">
+          <div class="title">2) Add to Cart</div>
+          <p class="desc">Adjust quantities in your cart. Taxes are calculated at checkout. No hidden fees.</p>
+        </div>
+      </div>
+      <div class="card visible">
+        <div class="body">
+          <div class="title">3) Login & Confirm</div>
+          <p class="desc">Login or create an account to save addresses and track orders in real time.</p>
+        </div>
+      </div>
+      <div class="card visible">
+        <div class="body">
+          <div class="title">4) Delivery</div>
+          <p class="desc">We prepare fresh and deliver hot. You’ll receive SMS updates till doorstep delivery.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Cart -->
+  <aside class="cart" id="cart">
+    <h3>🛒 Your Cart</h3>
+    <div id="cartItems"></div>
+    <div class="total">
+      <strong>Total</strong>
+      <strong id="cartTotal">₹0</strong>
+    </div>
+    <button class="btn checkout" id="checkoutBtn">Proceed to Checkout</button>
+  </aside>
+
+  <!-- Auth Modal -->
+  <div class="overlay" id="authOverlay" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="authTitle">
+      <button class="close" id="closeAuth">Close ✕</button>
+      <h3 id="authTitle">Welcome to Srishti's Veg Food Hub</h3>
+      <div class="tabs">
+        <button class="tabBtn active" data-tab="loginTab">Login</button>
+        <button class="tabBtn" data-tab="signupTab">Signup</button>
+      </div>
+      <div id="loginTab" class="tabPanel">
+        <form class="form" onsubmit="event.preventDefault(); alert('Logged in (demo).');">
+          <input type="email" placeholder="Email" required>
+          <input type="password" placeholder="Password" required>
+          <button class="btn primary" type="submit">Login</button>
+        </form>
+      </div>
+      <div id="signupTab" class="tabPanel" style="display:none">
+        <form class="form" onsubmit="event.preventDefault(); alert('Account created (demo).');">
+          <input type="text" placeholder="Full Name" required>
+          <input type="email" placeholder="Email" required>
+          <input type="tel" placeholder="Phone" required>
+          <input type="password" placeholder="Create Password" required>
+          <button class="btn primary" type="submit">Create Account</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Last Info -->
+  <section class="info" id="contact">
+    <div class="wrap">
+      <div>
+        <h4>Contact</h4>
+        <p class="muted">
+          Email: <a href="mailto:srishty@gmail.com" style="color:#fff">srishty@gmail.com</a><br>
+          Phone: <a href="tel:+918839110129" style="color:#fff">+91 88391 10129</a>
+        </p>
+      </div>
+      <div>
+        <h4>Owner</h4>
+        <p class="muted">This website is owned and operated by <b>Srishti Kumbhare</b>. We are committed to fresh ingredients, consistent quality, and delightful service.</p>
+      </div>
+      <div>
+        <h4>Location</h4>
+        <p class="muted">
+          Bhopal, Madhya Pradesh, India<br>
+          Open: 11:00 AM – 11:00 PM (All days)
+        </p>
+      </div>
+      <div>
+        <h4>About the Website</h4>
+        <p class="muted">Built with HTML, CSS & JavaScript. Glassmorphism UI, responsive grid, and a demo cart flow. For production, connect a payment gateway and order tracking.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>© 2025 Srishti's Veg Food Hub • All Rights Reserved</footer>
+
+<script>
+  // ---------- Data: Vegetarian Menu (RELIABLE online images) ----------
+  const MENU = [
+    {
+      id:'margherita',
+      name:'Margherita Pizza',
+      desc:'Classic tomato, basil & premium mozzarella on a hand-stretched crust.',
+      price:249,
+      img:'.dist/Screenshot 2025-08-19 031011.png'
+    },
+    {
+      id:'paneer-tikka-pizza',
+      name:'Paneer Tikka Pizza',
+      desc:'Smoky paneer tikka, capsicum & onions with mint drizzle.',
+      price:299,
+      img:'.dist/Screenshot 2025-08-19 031205.png'
+    },
+    {
+      id:'veggie-wrap',
+      name:'Veggie Wrap',
+      desc:'Whole-wheat wrap with hummus, crunchy veggies & herbs.',
+      price:139,
+      img:'.dist/Screenshot 2025-08-19 031341.png'
+    },
+    {
+      id:'paneer-butter',
+      name:'Paneer Butter Masala + Naan',
+      desc:'Silky tomato-butter gravy with cottage cheese. Comes with 2 butter naan.',
+      price:269,
+      img:'.dist/Screenshot 2025-08-19 031708.png'
+    },
+    {
+      id:'hakka-noodles',
+      name:'Veg Hakka Noodles',
+      desc:'Wok-tossed noodles with crunchy veggies, soy & aromatics.',
+      price:169,
+      img:'.dist/Screenshot 2025-08-19 032125.png'
+    },
+    {
+      id:'gulab-jamun',
+      name:'Gulab Jamun (4 pcs)',
+      desc:'Soft milk dumplings soaked in cardamom-saffron syrup.',
+      price:129,
+      img:'.dist/Screenshot 2025-08-19 030743.png'
+    },
+    {
+      id:'veg-biryani',
+      name:'Veg Biryani',
+      desc:'Fragrant basmati layered with marinated veggies & whole spices.',
+      price:219,
+      img:'.dist/Screenshot 2025-08-19 031854.png'
+    },
+    {
+      id:'chole-bhature',
+      name:'Chole Bhature',
+      desc:'Fluffy bhature with rich, slow-cooked chickpea curry.',
+      price:189,
+      img:'.dist/Screenshot 2025-08-19 032125.png'
+    },
+    {
+      id:'masala-dosa',
+      name:'Masala Dosa',
+      desc:'Crisp rice crêpe filled with spiced potato mash. Served with chutneys.',
+      price:179,
+      img:'.dist/Screenshot 2025-08-19 030410.png'
+    },
+    {
+      id:'salad-bowl',
+      name:'Fresh Salad Bowl',
+      desc:'Seasonal greens, cherry tomatoes, cucumbers & citrus vinaigrette.',
+      price:149,
+      img:'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=1200&q=80'
+    }
+  ];
+
+  // ---------- Render Menu ----------
+  const grid = document.getElementById('menuGrid');
+  grid.innerHTML = MENU.map(item => `
+    <article class="card">
+      <img src="${item.img}" alt="${item.name}" loading="lazy">
+      <div class="body">
+        <div class="title">${item.name}</div>
+        <p class="desc">${item.desc}</p>
+        <div class="priceRow">
+          <span class="price">₹${item.price}</span>
+          <button class="add" onclick="addToCart('${item.id}')">Add to Cart</button>
+        </div>
+        <div class="small">Prep: 18–25 min • Pure Veg</div>
+      </div>
+    </article>
+  `).join('');
+
+  // reveal animation on scroll
+  const cards = document.querySelectorAll('.card');
+  const io = new IntersectionObserver(entries=>{
+    entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('visible'); });
+  }, {threshold:.15});
+  cards.forEach(c=>io.observe(c));
+
+  // ---------- Cart Logic ----------
+  const cartItemsDiv = document.getElementById('cartItems');
+  const cartTotalEl   = document.getElementById('cartTotal');
+  const cart = {}; // {id: {qty, item}}
+
+  function addToCart(id){
+    const item = MENU.find(x=>x.id===id);
+    if(!cart[id]) cart[id] = { qty:0, item };
+    cart[id].qty++;
+    renderCart();
+
+    // small feedback on button
+    const btn = [...document.querySelectorAll('.add')].find(b=>b.getAttribute('onclick')?.includes(id));
+    if(btn){
+      const old = btn.textContent;
+      btn.textContent = 'Added ✓';
+      btn.disabled = true;
+      setTimeout(()=>{ btn.textContent = old; btn.disabled = false; }, 900);
+    }
+  }
+  function inc(id){ cart[id].qty++; renderCart(); }
+  function dec(id){ cart[id].qty = Math.max(0, cart[id].qty-1); if(cart[id].qty===0) delete cart[id]; renderCart(); }
+  function removeItem(id){ delete cart[id]; renderCart(); }
+
+  function renderCart(){
+    const ids = Object.keys(cart);
+    if(ids.length===0){
+      cartItemsDiv.innerHTML = `<div class="small" style="opacity:.8">Your cart is empty.</div>`;
+      cartTotalEl.textContent = '₹0';
+      return;
+    }
+    let total = 0;
+    cartItemsDiv.innerHTML = ids.map(id=>{
+      const {qty,item} = cart[id];
+      total += qty * item.price;
+      return `
+        <div class="cart-item">
+          <img src="${item.img}" alt="${item.name}">
+          <div class="meta"><strong>${item.name}</strong>
+            <div class="small">₹${item.price} × ${qty} = ₹${item.price*qty}</div>
+          </div>
+          <div class="qty">
+            <button onclick="dec('${id}')">−</button>
+            <span>${qty}</span>
+            <button onclick="inc('${id}')">+</button>
+            <button onclick="removeItem('${id}')" title="Remove">✕</button>
+          </div>
+        </div>
+      `;
+    }).join('');
+    cartTotalEl.textContent = '₹' + total;
+  }
+
+  document.getElementById('checkoutBtn').addEventListener('click',()=>{
+    if(Object.keys(cart).length===0){ alert('Add items to cart first.'); return; }
+    alert('Demo checkout: Login/Signup required. (Connect payment gateway in production)');
+    openAuth();
+  });
+
+  // ---------- Auth Modal ----------
+  const overlay = document.getElementById('authOverlay');
+  const openAuthBtn = document.getElementById('openAuth');
+  const closeAuthBtn = document.getElementById('closeAuth');
+  const tabBtns = document.querySelectorAll('.tabBtn');
+  const tabs = { loginTab: document.getElementById('loginTab'), signupTab: document.getElementById('signupTab') };
+
+  function openAuth(){ overlay.style.display='grid'; overlay.setAttribute('aria-hidden','false'); }
+  function closeAuth(){ overlay.style.display='none'; overlay.setAttribute('aria-hidden','true'); }
+
+  openAuthBtn.addEventListener('click', openAuth);
+  closeAuthBtn.addEventListener('click', closeAuth);
+  overlay.addEventListener('click', (e)=>{ if(e.target===overlay) closeAuth(); });
+
+  tabBtns.forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      tabBtns.forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      Object.values(tabs).forEach(p=>p.style.display='none');
+      tabs[btn.dataset.tab].style.display='block';
+    });
+  });
+</script>
+</body>
+</html>
+
